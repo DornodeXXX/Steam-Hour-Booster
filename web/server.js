@@ -249,6 +249,18 @@ app.post('/api/add-account', async (req, res) => {
     res.status(201).json({ message: 'Account added successfully' });
 });
 
+app.post('/api/clear-logs', async (req, res) => {
+    try {
+        await fs.writeFile(LOG_FILE, '');
+        writeLog('Logs cleared by user');
+        res.status(200).json({ success: true, message: 'Logs cleared successfully' });
+    } catch (error) {
+        console.error('Error clearing logs:', error);
+        writeLog(`Error clearing logs: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Error clearing logs' });
+    }
+});
+
 app.put('/api/edit-account/:username', async (req, res) => {
     const username = req.params.username;
     const updatedData = req.body;
