@@ -34,7 +34,7 @@
 3.  **Клонируйте репозиторий (или скачайте файлы) и перейдите в папку проекта:**
     ```bash
     # Если используете Git:
-    git clone https://github.com/Dornode/Steam-Hour-Booster.git
+    git clone https://github.com/DornodeXXX/Steam-Hour-Booster.git
     cd Steam-Hour-Booster
     
     # Если скачали ZIP архив:
