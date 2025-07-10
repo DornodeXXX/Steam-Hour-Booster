@@ -122,7 +122,7 @@
         if (confirm('Вы уверены, что хотите очистить логи? Это действие нельзя отменить.')) {
             try {
                 await apiRequest('/api/clear-logs', 'POST');
-                logDiv.textContent = 'Логи очищены.\n';
+				loadLogs();
                 socket.emit('log', 'Логи очищены.\n');
             } catch (error) {
                 console.error("Failed to clear logs:", error);
@@ -244,28 +244,30 @@
             accountsDiv.appendChild(div);
         });
     }
-    async function start(username) {
-        try {
-            await apiRequest('/api/start', 'POST', {
-                username
-            });
-        } catch (error) { /* Ошибка уже обработана в apiRequest */ }
-    }
-    async function stop(username) {
-        try {
-            await apiRequest('/api/stop', 'POST', {
-                username
-            });
-        } catch (error) { /* Ошибка уже обработана в apiRequest */ }
-    }
-    async function deleteAccount(username) {
-        if (confirm(`Вы уверены, что хотите удалить аккаунт ${username}? Это действие необратимо.`)) {
-            try {
-                await apiRequest(`/api/delete-account/${username}`, 'DELETE');
-            } catch (error) { /* Ошибка уже обработана в apiRequest */ }
-        }
-    }
+	
+	async function manageAccount(action, username) {
+		const endpoints = {
+			start: { method: 'POST', url: '/api/start' },
+			stop: { method: 'POST', url: '/api/stop' },
+			delete: { method: 'DELETE', url: `/api/delete-account/${username}` }
+		};
 
+		if (action === 'delete') {
+			const message = `Вы уверены, что хотите удалить аккаунт ${username}? Это действие необратимо.`;
+			if (!confirm(message)) return;
+		}
+
+		try {
+			const { method, url } = endpoints[action];
+			await apiRequest(url, method, action !== 'delete' ? { username } : null);
+		} catch (error) {
+			console.debug(`Account ${action} error:`, error);
+		}
+	}
+	const start = username => manageAccount('start', username);
+	const stop = username => manageAccount('stop', username);
+	const deleteAccount = username => manageAccount('delete', username);
+	
     function openModal(modalId) {
         document.getElementById(modalId).style.display = 'flex';
     }
