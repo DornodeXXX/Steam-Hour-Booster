@@ -548,3 +548,7 @@ body.light-mode #theme-toggle:hover {
 #clearLogsBtn {
     font-size: 14px;
 }
+
+#clearLogsBtn > i {
+    margin-right: 0;
+}
