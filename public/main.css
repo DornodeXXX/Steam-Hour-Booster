@@ -334,6 +334,10 @@ body.light-mode #theme-toggle {
     background: rgba(0, 123, 255, 0.4);
 }
 
+body.light-mode .social-link {
+	color: #000000;
+}
+
 body.light-mode #theme-toggle:hover {
     background: rgba(0, 123, 255, 0.6);
 }
